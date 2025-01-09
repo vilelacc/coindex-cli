@@ -33,7 +33,20 @@ class Coindex {
           chalk.red.bold(" Invalid values ​​in input")
       );
     } else {
-      console.log(data);
+      // Iteração pelo objeto
+      for (const key in data) {
+        if (data.hasOwnProperty(key)) {
+          const { name, high, low, varBid, pctChange, bid, ask, create_date } =
+            data[key];
+          console.log(
+            `${chalk.inverse(
+              name
+            )}\n\nCompra: ${bid}\nVenda: ${ask}\nMáxima: ${high}\nMínima: ${low}\nVariação: ${varBid}\n% da Variação: ${pctChange}\nHora: ${create_date
+              .split(" ")[1]
+              .trim()}\n`
+          );
+        }
+      }
     }
   }
 }
