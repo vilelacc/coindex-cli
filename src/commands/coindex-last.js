@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import Coindex from "../libs/coindex.js";
+import { Coindex } from "../libs/coindex.js";
 
 const lastCommand = new Command("last")
   .description("returns the last occurrence of the selected currencies.")
