@@ -3,60 +3,33 @@ import chalk from "chalk";
 
 // internal modules
 import FetchData from "./coindex-fetch-data.js";
-import objectArray from "../utils/object-to-array.js";
+import ErrorHandler from "../utils/error-handler.js";
+import ObjectArray from "../utils/object-array.js";
+import DataLoader from "../utils/data-loader.js";
+import DataFormatter from "../utils/data-formatter.js";
 
-// node core modules
-import { readFileSync } from "fs";
+const CoinNames = () => {
+  const data = DataLoader("../utils/data/coin-names.json");
+  console.table(data);
+};
 
-const coinNamesData = JSON.parse(
-  readFileSync(new URL("../utils/data/coin-names.json", import.meta.url))
-);
+const CoinCombinations = () => {
+  const data = DataLoader("../utils/data/coin-combinations.json");
+  console.table(data);
+};
 
-const coinCombinationsData = JSON.parse(
-  readFileSync(new URL("../utils/data/coin-combinations.json", import.meta.url))
-);
-
+// Main class for Coindex
 class Coindex {
-  static showCoinNames() {
-    console.table(coinNamesData);
-  }
-
-  static showCoinCombinations() {
-    console.table(coinCombinationsData);
-  }
-
   static async showLast(currencyCode) {
     const data = await FetchData.last(currencyCode);
 
     if (data.status) {
-      this.handlerError(data.status);
+      ErrorHandler(data.status);
     } else {
-      const convertedData = objectArray(data);
-      // Iteração pelo objeto
-      convertedData.forEach((obj) => {
-        const { name, high, low, varBid, pctChange, bid, ask, create_date } =
-          obj;
-        console.log(
-          `${chalk.inverse(name)}\n\n` +
-            `Compra: ${chalk.magenta.bold(bid)}\n` +
-            `Venda: ${chalk.red.bold(ask)}\n` +
-            `Máxima: ${chalk.yellowBright.bold(high)}\n` +
-            `Mínima: ${chalk.yellow.bold(low)}\n` +
-            `Variação: ${chalk.magenta.bold(varBid)}\n` +
-            `% da Variação: ${chalk.cyan.bold(pctChange)}\n` +
-            `Hora: ${chalk.green.bold(create_date.split(" ")[1].trim())}\n`
-        );
-      });
-    }
-  }
-
-  static handlerError(code) {
-    switch (code) {
-      case 404:
-        console.error(chalk.red.bold("Invalid input data"));
-        break;
+      const convertedData = ObjectArray(data);
+      convertedData.forEach(DataFormatter);
     }
   }
 }
 
-export default Coindex;
+export { CoinNames, CoinCombinations, Coindex };
