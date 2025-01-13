@@ -1,21 +1,19 @@
 import chalk from "chalk";
+import DateFormatter from "./date-formatter.js";
 
 const DataFormatter = (object) => {
   if (object.name && object.create_date) {
-    console.log(
-      `${chalk.bgGray(object.name)}\n\n` +
-        `Time: ${chalk.bgGreen(
-          object.create_date.split(" ")[1].trim()
-        )}`
-    );
+    console.log(`${chalk.inverse(object.name)}\n`);
+    //  `Time: ${chalk.bgRed(object.create_date.split(" ")[1].trim())}`
   }
   console.log(
-    `Buy: ${chalk.bgMagenta(object.bid)}\n` +
-      `Sale: ${chalk.bgRed(object.ask)}\n` +
-      `Maximum: ${chalk.bgYellow(object.high)}\n` +
-      `Minimum: ${chalk.bgYellow(object.low)}\n` +
-      `Variation: ${chalk.bgBlueBright(object.varBid)}\n` +
-      `% of Variation: ${chalk.bgCyan(object.pctChange)}\n`
+    `Buy: ${object.bid}\n` +
+      `Sale: ${object.ask}\n` +
+      `Maximum: ${object.high}\n` +
+      `Minimum: ${object.low}\n` +
+      `Variation: ${object.varBid}\n` +
+      `% of Variation: ${object.pctChange}\n` +
+      `Date (UTC): ${chalk.bgRed(`${DateFormatter(object.timestamp)}`)}\n`
   );
 };
 
