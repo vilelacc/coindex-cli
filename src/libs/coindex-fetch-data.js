@@ -14,7 +14,7 @@ class FetchData {
   }
 
   static async last(currencyCode) {
-    return FetchData.fetchDataFromApi(`/last/${currencyCode}`);
+    return FetchData.fetchDataFromApi(`/json/last/${currencyCode}`);
   }
 
   static async daily(currencyCode, numberOfDays) {
